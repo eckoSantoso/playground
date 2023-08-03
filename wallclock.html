@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #f1f1f1;
+      }
+      .wallclock {
+        width: 250px;
+        height: 250px;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #ffffff;
+        border-radius: 125px;
+      }
+      .hours {
+        position: absolute;
+        background-color: rgb(37, 39, 44);
+        width: calc(250px - 40px);
+        height: calc(250px - 40px);
+        border-radius: 50%;
+        top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 5px 5px 10px rgba(37, 39, 44, 0.5), inset 3px 3px 3px rgba(255, 255, 255, 0.5), -6px -6px 8px #ffffff;
+      }
+      .hours::before {
+        content: "";
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background-color: red;
+        border-radius: 50%;
+        box-shadow: 0px 0px 0px 1px red, inset 0px 0px 0px 2px #fff;
+        z-index: 9999;
+      }
+      .hours > span {
+        position: absolute;
+        text-align: center;
+        inset: 10px;
+        color: #fff;
+        transform: rotate(calc(30deg * var(--hour)));
+        font-size: 0.75em;
+      }
+      .hours > span > i {
+        display: inline-block;
+        transform: rotate(calc(-30deg * var(--hour)));
+      }
+      .hours .needle {
+        position: absolute;
+        width: 140px;
+        height: 140px;
+        border: 1px solid rgb(250, 243, 240, 0.1);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        z-index: 10;
+      }
+      .hours .needle i {
+        position: absolute;
+        width: 6px;
+        height: 50%;
+        background-color: var(--needle-color);
+        opacity: 0.75;
+        transform-origin: bottom;
+        transform: scaleY(0.5);
+      }
+      .hours .needle#minutes {
+        width: 120px;
+        height: 120px;
+      }
+      .hours .needle#hours {
+        width: 90px;
+        height: 90px;
+      }
+      .hours .needle#seconds i {
+        width: 1px;
+      }
+      .hours .needle#minutes i {
+        width: 2px;
+      }
+      .hours .needle#hours i {
+        width: 4px;
+      }
+      .hours .needle::before {
+        content: "";
+        position: absolute;
+        top: -6px;
+        left: 50%;
+        width: 5px;
+        height: 5px;
+        background-color: var(--needle-color);
+        border-radius: 50%;
+        transform: translateX(-50%);
+        box-shadow: 0 0 20px var(--needle-color), 0 0 60px var(--needle-color);
+      }
+    </style>
+    <title>Wall Clock</title>
+  </head>
+  <body>
+    <div class="wallclock">
+      <div class="hours">
+        <div class="needle" id="seconds" style="--needle-color: #FAF3F0;"><i></i></div>
+        <div class="needle" id="minutes" style="--needle-color: #D4E2D4;"><i></i></div>
+        <div class="needle" id="hours" style="--needle-color: #FFCACC;"><i></i></div>
+        <span style="--hour:0;"><i>12</i></span>
+        <span style="--hour:1;"><i>1</i></span>
+        <span style="--hour:2;"><i>2</i></span>
+        <span style="--hour:3;"><i>3</i></span>
+        <span style="--hour:4;"><i>4</i></span>
+        <span style="--hour:5;"><i>5</i></span>
+        <span style="--hour:6;"><i>6</i></span>
+        <span style="--hour:7;"><i>7</i></span>
+        <span style="--hour:8;"><i>8</i></span>
+        <span style="--hour:9;"><i>9</i></span>
+        <span style="--hour:10;"><i>10</i></span>
+        <span style="--hour:11;"><i>11</i></span>
+      </div>
+    </div>
+    <script>
+      var hourDiv = document.getElementById('hours');
+      var minuteDiv = document.getElementById('minutes');
+      var secondDiv = document.getElementById('seconds');
+      
+      setInterval(() => {
+      	let now = new Date();
+        let hour = now.getHours() * 30;
+        let minute = now.getMinutes() * 6;
+        let second = now.getSeconds() * 6;
+      
+        hourDiv.style.transform = `rotate(${hour+(minute/12)}deg)`;
+        minuteDiv.style.transform = `rotate(${minute}deg)`;
+        secondDiv.style.transform = `rotate(${second}deg)`;
+      }, 1000);
+    </script>
+  </body>
+</html>
