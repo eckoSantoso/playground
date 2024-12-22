@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human Historical Timeline</title>
+    <style>
+      body{font-family:Arial,sans-serif;margin:0;padding:0;background-color:#f5f5f5;color:#333}.timeline-container{width:90%;max-width:1200px;margin:auto;padding:20px 0}.timeline-header{text-align:center;margin-bottom:20px}.timeline-header h1{font-size:2.5em;margin-bottom:10px}.timeline-header input{padding:10px;width:100%;max-width:400px;border:1px solid #ccc;border-radius:5px}.timeline{display:flex;gap:20px;overflow-x:auto;padding:10px;scroll-behavior:smooth}.event-card{flex:0 0 300px;border:1px solid #ddd;border-radius:8px;background-color:#fff;box-shadow:0 4px 6px rgba(0,0,0,.1);transition:transform .2s}.event-card:hover{transform:scale(1.05)}.event-year{background-color:#333;color:#fff;padding:10px;text-align:center;font-weight:700;border-top-left-radius:8px;border-top-right-radius:8px}.event-content{padding:15px;text-align:left}.event-content h2{font-size:1.2em;margin-bottom:10px}.event-content img{max-width:100%;border-radius:5px;margin-top:10px}
+    </style>
+</head>
+<body>
+    <div class="timeline-container">
+        <div class="timeline-header">
+            <h1>Timeline of Human Development</h1>
+            <input type="text" id="search" placeholder="Search events..." onkeyup="filterEvents()">
+        </div>
+        <div class="timeline" id="timeline"></div>
+    </div>
+    <script type="text/javascript">
+      // Path ke file JSON
+      const jsonTimeline = {
+    "title": "Detailed Timeline of Human Development",
+    "events": [
+        {
+            "year": "-3500",
+            "headline": "Awal Peradaban Sumeria",
+            "text": "Bangsa Sumeria di Mesopotamia menciptakan sistem tulisan pertama, cuneiform. Mereka membangun kota-kota besar seperti Uruk dan Ur.",
+            "media": {
+                "url": "https://link.to/image1.jpg",
+                "credit": "Mesopotamia",
+                "caption": "Cuneiform, tulisan pertama dalam sejarah."
+            },
+            "background": "#cfcfcf"
+        },
+        {
+            "year": "-3100",
+            "headline": "Firaun Pertama Mesir",
+            "text": "Narmer menyatukan Mesir Hulu dan Hilir, membentuk kerajaan Mesir kuno yang stabil. Simbol ini terlihat dalam artefak seperti Palet Narmer.",
+            "media": {
+                "url": "https://link.to/image2.jpg",
+                "credit": "Mesir Kuno",
+                "caption": "Palet Narmer, simbol penyatuan Mesir."
+            },
+            "background": "#f7e6a6"
+        },
+        {
+            "year": "-2000",
+            "headline": "Kode Hammurabi",
+            "text": "Raja Hammurabi dari Babilonia menyusun salah satu hukum tertulis pertama di dunia, yang mencakup berbagai aspek kehidupan seperti perdagangan, pernikahan, dan keadilan.",
+            "media": {
+                "url": "https://link.to/image3.jpg",
+                "credit": "Babilonia",
+                "caption": "Prasasti Kode Hammurabi di batu basalt."
+            },
+            "background": "#d9c6b0"
+        },
+        {
+            "year": "-622",
+            "headline": "Hijrah Nabi Muhammad SAW",
+            "text": "Hijrah Nabi Muhammad dari Makkah ke Madinah menandai awal perhitungan kalender Islam. Ini juga menjadi titik penting dalam penyebaran Islam.",
+            "media": {
+                "url": "https://link.to/image4.jpg",
+                "credit": "Islam",
+                "caption": "Masjid Nabawi, salah satu masjid tertua di dunia."
+            },
+            "background": "#a8d3a8"
+        },
+        {
+            "year": "1492",
+            "headline": "Penemuan Dunia Baru",
+            "text": "Christopher Columbus, dengan dukungan Spanyol, melakukan pelayaran yang menemukan benua Amerika. Peristiwa ini membuka era kolonialisasi besar-besaran.",
+            "media": {
+                "url": "https://link.to/image5.jpg",
+                "credit": "Columbus",
+                "caption": "Pelayaran pertama Columbus."
+            },
+            "background": "#86a8e7"
+        },
+        {
+            "year": "1969",
+            "headline": "Pendaratan di Bulan",
+            "text": "Neil Armstrong menjadi manusia pertama yang berjalan di Bulan sebagai bagian dari misi Apollo 11 NASA, menandai era baru eksplorasi luar angkasa.",
+            "media": {
+                "url": "https://link.to/image6.jpg",
+                "credit": "NASA",
+                "caption": "Momen bersejarah pendaratan Apollo 11."
+            },
+            "background": "#121212"
+        },
+        {
+            "year": "2020",
+            "headline": "Pandemi COVID-19",
+            "text": "Pandemi COVID-19 melanda dunia, memengaruhi kehidupan manusia secara global. Perubahan besar terjadi dalam cara kerja, pendidikan, dan kesehatan masyarakat.",
+            "media": {
+                "url": "https://link.to/image7.jpg",
+                "credit": "WHO",
+                "caption": "Dampak global dari pandemi COVID-19."
+            },
+            "background": "#ffcccc"
+        }
+    ]
+};
+      
+      // Ambil elemen timeline
+      const timelineElement = document.getElementById("timeline");
+      
+      // Fungsi untuk membuat kartu event
+      function createEventCard(event) {
+          const card = document.createElement("div");
+          card.className = "event-card";
+          card.setAttribute("data-year", event.year);
+      
+          card.innerHTML = `
+              <div class="event-year">${event.year}</div>
+              <div class="event-content">
+                  <h2>${event.headline}</h2>
+                  <p>${event.text}</p>
+                  <img src="${event.media.url}" alt="${event.media.caption}">
+              </div>
+          `;
+      
+          return card;
+      }
+      
+      // Fungsi untuk memuat data JSON
+      async function loadTimelineData() {
+          try {
+              const data = await jsonTimeline;
+              const events = data.events;
+      
+              // Hapus konten lama dan tambahkan kartu baru
+              timelineElement.innerHTML = "";
+              events.forEach((event) => {
+                  const eventCard = createEventCard(event);
+                  timelineElement.appendChild(eventCard);
+              });
+          } catch (error) {
+              console.error("Error loading timeline data:", error);
+          }
+      }
+      
+      // Fungsi filter event berdasarkan pencarian
+      function filterEvents() {
+          const searchInput = document.getElementById("search").value.toLowerCase();
+          const eventCards = document.querySelectorAll(".event-card");
+      
+          eventCards.forEach((card) => {
+              const year = card.getAttribute("data-year");
+              const content = card.querySelector(".event-content").innerText.toLowerCase();
+      
+              if (year.includes(searchInput) || content.includes(searchInput)) {
+                  card.style.display = "block";
+              } else {
+                  card.style.display = "none";
+              }
+          });
+      }
+      
+      // Muat data saat halaman dimuat
+      document.addEventListener("DOMContentLoaded", loadTimelineData);
+
+    </script>
+</body>
+</html>
