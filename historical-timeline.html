@@ -125,8 +125,7 @@
       // Fungsi untuk memuat data JSON
       async function loadTimelineData() {
           try {
-              const response = jsonTimeline;
-              const data = await response.json();
+              const data = await jsonTimeline;
               const events = data.events;
       
               // Hapus konten lama dan tambahkan kartu baru
